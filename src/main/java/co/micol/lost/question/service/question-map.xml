@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.micol.lost.question.service.QuestionMapper">
+	<select id="QuestionSelectList" resultType="co.micol.lost.question.service.QuestionVO">
+		SELECT * FROM QUESTION
+	</select>
+	
+	<insert id="QuestionInsert" parameterType="co.micol.lost.question.service.QuestionVO">
+		INSERT INTO QUESTION VALUES(#{id}, #{name}, #{ques}, #{answor})
+	</insert>
+	
+	<update id="QuestionUpdate" parameterType="co.micol.lost.question.service.QuestionVO">
+		UPDATE QUESTION SET ANSWOR=#{answor}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="QuestionDelete" parameterType="co.micol.lost.question.service.QuestionVO">
+	   	DELETE FROM QUESTION WHERE ID = #{id}
+	</delete>	
+</mapper>

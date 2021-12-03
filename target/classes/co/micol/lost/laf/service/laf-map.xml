@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.micol.lost.laf.service.LafMapper">
+	<select id="noticeSelectList"
+		resultType="co.micol.lost.laf.service.LafVO"
+		parameterType="co.micol.lost.pagination.Pagination">
+		SELECT * 
+		FROM (
+			SELECT ROWNUM RN, A.* 
+				FROM (
+						SELECT * 
+						FROM LAF 
+						ORDER BY lnum DESC 
+						) A
+				)
+	WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	
+	<select id="noticeSelect"
+		resultType="co.micol.lost.laf.service.LafVO">
+		SELECT * FROM LAF WHERE LNUM = #{lnum}
+	</select>
+	
+	<select id="noticeSearchList" parameterType="String"
+		resultType="co.micol.lost.laf.service.LafVO">
+		SELECT * FROM LAF
+		WHERE SUBJECT LIKE '%'||#{searchKey}||'%'
+	</select>
+	
+	<insert id="noticeInsert"
+		parameterType="co.micol.lost.laf.service.LafVO">
+		<selectKey keyProperty="lnum" resultType="int" order="BEFORE">
+			SELECT MAX(LNUM)+1 AS NUM FROM LAF
+		</selectKey>
+		INSERT INTO LAF
+		VALUES(#{lnum}, #{lmodel}, #{lname},
+		#{location}, #{ltel}, #{ldate})
+	</insert>
+	
+	<update id="noticeUpdate"
+		parameterType="co.micol.lost.laf.service.LafVO">
+		UPDATE LAF 
+		<set>
+			<if test="lmodel != null">LMODEL = #{lmodel}</if>
+			<if test="lname != null">LNAME = #{lname}</if>
+			<if test="location != null">LOCATION = #{location}</if>
+			<if test="ltel != null">LTEL = #{ltel}</if>
+		</set> 
+		
+		WHERE lnum = #{lnum}
+	</update>
+	
+	<delete id="noticeDelete"
+		parameterType="co.micol.lost.laf.service.LafVO">
+		DELETE FROM LAF WHERE LNUM= #{lnum}
+	</delete>
+	
+	<select id="noticeCount" resultType="int">
+          SELECT COUNT(*) FROM LAF
+	</select>
+	
+</mapper>
